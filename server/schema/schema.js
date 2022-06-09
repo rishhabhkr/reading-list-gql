@@ -18,7 +18,7 @@ const books = [
     name: "Harry Potter",
     genre: "Fantasy",
     id: "3",
-    authorId:"4"
+    authorId:"3"
   },
   {
     name: "Autobiography of a Yogi",
@@ -45,7 +45,7 @@ const authors = [
     id: "3",
   },
 ];
-console.log(books);
+
 const {
   GraphQLObjectType, //To create object types like Books and Authors etc.
   GraphQLID,
@@ -61,6 +61,13 @@ const BookType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
+    //Type relations, book can have an author of authorType object, resolver is resposible for populating the field
+    author: {
+            type: AuthorType,
+            resolve(parent, args){
+              console.log(parent)
+            return _.find(authors, {id : parent.authorId})
+            }}
   }),
 });
 
