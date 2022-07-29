@@ -126,6 +126,27 @@ const RootQuery = new GraphQLObjectType({
   },
 });
 
+const Mutation= new GraphQLObjectType({
+  name: "Mutation",
+  fields:{
+    addAuthor:{
+      type: AuthorType,
+      args: {
+        name: {type: GraphQLString},      //Input to be provided with the mutation
+        age: {type:GraphQLInt}
+      },
+      resolve(parent,args){
+        let author= new Author({        //author is an instance of Author model
+          name: args.name,
+          age: args.age
+        })
+        return author.save();       //mongoose provides save(), saves the data in the collection.
+      }
+    }
+  }
+})
+
 module.exports = new GraphQLSchema({
   query: RootQuery,
+  mutation: Mutation
 });
