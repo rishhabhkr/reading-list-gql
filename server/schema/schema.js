@@ -126,7 +126,7 @@ const RootQuery = new GraphQLObjectType({
   },
 });
 
-const Mutation= new GraphQLObjectType({
+const Mutation = new GraphQLObjectType({
   name: "Mutation",
   fields:{
     addAuthor:{
@@ -141,6 +141,22 @@ const Mutation= new GraphQLObjectType({
           age: args.age
         })
         return author.save();       //mongoose provides save(), saves the data in the collection.
+      }
+    },
+    addBook: {
+      type: BookType,
+      args:{
+        name:{type:GraphQLString},
+        genre:{type: GraphQLString},
+        authorId:{type: GraphQLID}
+      },
+      resolve(parent, args){
+        let book= new Book({
+          name: args.name,
+          genre: args.genre,
+          authorId: args.authorId
+        })
+        return book.save()
       }
     }
   }
